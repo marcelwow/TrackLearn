@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Twoje Przedmioty</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Dodajemy Chart.js -->
+    <style>
+        body {
+            background: linear-gradient(to right, #c9eaf3, #ffffff);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background: #f6f1f1;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0077b6;
+        }
+
+        .list-group-item {
+            background: linear-gradient(to right, #a6c0fe, #f68084);
+            text-align: center;
+            border: 1px solid #b3e0f2;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            padding: 15px;
+        }
+
+        .btn {
+            margin-right: 5px;
+        }
+
+        canvas {
+            background: linear-gradient(to right, #a5b4e4, #9f585b) ;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+<h1>Twoje przedmioty</h1>
+
+<form action="/subjects/add" method="POST">
+    <input type="text" name="name" placeholder="Dodaj przedmiot" required>
+    <button type="submit" class="btn btn-success">Dodaj</button>
+</form>
+<!-- nowe -->
+
+<ul class="list-group mt-3">
+    <% subjects.forEach(subject => { %>
+        <li class="list-group-item">
+            <strong><%= subject.name %></strong>
+
+            <!-- Lista ocen -->
+            <p>📌 Oceny:
+                <% if (subject.grades.length === 0) { %>
+                    Brak ocen
+                <% } else { %>
+                    <%= subject.grades.join(", ") %>
+                <% } %>
+            </p>
+
+            <!-- Przycisk do przeliczenia średniej -->
+            <button class="btn btn-info btn-sm" onclick="recalculateAverage('<%= subject._id %>')">Przelicz średnią</button>
+
+            <!-- Miejsce na średnią -->
+            <p id="average-container-<%= subject._id %>" style="display: none;">
+                📊 Średnia ocen: <span id="average-<%= subject._id %>"></span>
+            </p>
+
+            <!-- Przycisk do rysowania wykresu -->
+            <button class="btn btn-secondary btn-sm" onclick="drawChart('<%= subject._id %>', <%= JSON.stringify(subject.grades) %>)">
+                🎨 Pokaż wykres
+            </button>
+
+            <!-- Miejsce na wykres -->
+            <canvas id="chart-<%= subject._id %>" width="400" height="200" style="display: none;"></canvas>
+
+            <!-- Formularz do dodania oceny -->
+            <form action="/subjects/<%= subject._id %>/grade" method="POST">
+                <input type="number" step="0.01" name="grade" placeholder="Dodaj ocenę" required>
+                <button type="submit" class="btn btn-primary btn-sm">Dodaj ocenę</button>
+            </form>
+
+            <!-- Przycisk do usunięcia przedmiotu -->
+            <form action="/subjects/<%= subject._id %>/delete" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+            </form>
+        </li>
+    <% }) %>
+</ul>
+
+<script>
+    function recalculateAverage(subjectId) {
+        fetch(`/subjects/${subjectId}/recalculate`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(`average-${subjectId}`).innerText = data.average;
+                document.getElementById(`average-container-${subjectId}`).style.display = "block";
+            })
+            .catch(error => console.error("Błąd:", error));
+    }
+
+    function drawChart(subjectId, grades) {
+        const canvas = document.getElementById(`chart-${subjectId}`);
+        canvas.style.display = "block";  // Pokazujemy wykres
+
+        const ctx = canvas.getContext("2d");
+
+        // Usuwamy poprzedni wykres (jeśli istnieje)
+        if (window.charts && window.charts[subjectId]) {
+            window.charts[subjectId].destroy();
+        }
+
+        // Tworzymy nowy wykres
+        if (!window.charts) window.charts = {};
+        window.charts[subjectId] = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: grades.map((_, i) => `Ocena ${i + 1}`),
+                datasets: [{
+                    label: "Oceny",
+                    data: grades,
+                    borderColor: "blue",
+                    borderWidth: 2,
+                    fill: false
+                }]
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
