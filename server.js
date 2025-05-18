@@ -62,7 +62,7 @@ app.get("/register", isLoggedIn, (req, res) => {
 });
 
 // Strona główna
-app.get("/", isAuthenticated, (req, res) => {
+app.get("/", (req, res) => {
     res.render("home");
 });
 
