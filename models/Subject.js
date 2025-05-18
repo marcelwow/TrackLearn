@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const SubjectSchema = new mongoose.Schema({
     name: String,
     grades: [Number], // Tablica ocen
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 });
 
 // Funkcja do obliczania średniej ocen
