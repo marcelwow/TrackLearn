@@ -7,7 +7,7 @@ const app = express();
 const port = 4000;
 
 // Połączenie z MongoDB
-mongoose.connect("mongodb://localhost:27017/tracklearn", {
+mongoose.connect("mongodb+srv://marcelekwaw:marcel1234@cluster0.86jxk9y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => console.log(" Połączono z MongoDB"))
