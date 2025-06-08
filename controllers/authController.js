@@ -28,6 +28,7 @@ exports.postLogin = async (req, res) => {
         }
 
         req.session.userId = user._id;
+        req.session.username = user.username;
         console.log('Sesja utworzona dla użytkownika:', user._id);
         res.redirect('/subjects');
     } catch (error) {

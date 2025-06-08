@@ -3,7 +3,10 @@ const Subject = require("../models/Subject");
 // Pobieranie wszystkich przedmiotów
 exports.getSubjects = async (req, res) => {
     const subjects = await Subject.find({ userId: req.session.userId });
-    res.render("subjects", { subjects });
+    res.render("subjects", {
+        subjects,
+        username: req.session.username
+    });
 };
 
 // Dodawanie nowego przedmiotu

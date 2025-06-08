@@ -46,21 +46,66 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             color: white;
         }
+        .btn-gradient-warning {
+            background: linear-gradient(45deg, #ff9800, #ff5722);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-gradient-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .user-panel {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .user-panel p {
+            margin: 0;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        .user-panel .username {
+            font-weight: bold;
+            color: #2051bf;
+        }
     </style>
 </head>
 <body class="d-flex align-items-center justify-content-center">
+<% if (typeof userId !== 'undefined' && userId) { %>
+    <div class="user-panel">
+        <p>Zalogowano jako: <span class="username"><%= username %></span></p>
+    </div>
+<% } %>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
             <div class="glass-container p-5 text-center">
                 <h1 class="display-4 mb-4 text-primary fw-bold">Witaj w TrackLearn!</h1>
                 <div class="d-grid gap-3">
-                    <a href="/login" class="btn btn-gradient-primary btn-lg">
-                        <i class="bi bi-box-arrow-in-right me-2"></i>Zaloguj się
-                    </a>
-                    <a href="/register" class="btn btn-gradient-danger btn-lg">
-                        <i class="bi bi-person-plus me-2"></i>Zarejestruj się
-                    </a>
+                    <% if (typeof userId !== 'undefined' && userId) { %>
+                        <a href="/subjects" class="btn btn-gradient-primary btn-lg">
+                            <i class="bi bi-book me-2"></i>Moje przedmioty
+                        </a>
+                        <a href="/logout" class="btn btn-gradient-warning btn-lg">
+                            <i class="bi bi-box-arrow-right me-2"></i>Wyloguj się
+                        </a>
+                    <% } else { %>
+                        <a href="/login" class="btn btn-gradient-primary btn-lg">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Zaloguj się
+                        </a>
+                        <a href="/register" class="btn btn-gradient-danger btn-lg">
+                            <i class="bi bi-person-plus me-2"></i>Zarejestruj się
+                        </a>
+                    <% } %>
                 </div>
             </div>
         </div>

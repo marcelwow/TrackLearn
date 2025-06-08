@@ -46,10 +46,59 @@
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
             margin-top: 15px;
         }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+            color: white;
+        }
+
+        .user-info {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 14px;
+            color: #333;
+        }
+
+        .user-info .username {
+            font-weight: bold;
+            color: #0077b6;
+        }
     </style>
 </head>
 <body class="container mt-5">
-<h1>Twoje przedmioty</h1>
+<div class="user-info">
+    Zalogowano jako: <span class="username"><%= username %></span>
+</div>
+
+<div class="header-container">
+    <h1>Twoje przedmioty</h1>
+    <form action="/logout" method="POST" style="margin: 0;">
+        <button type="submit" class="logout-btn">Wyloguj się</button>
+    </form>
+</div>
 
 <form action="/subjects/add" method="POST">
     <input type="text" name="name" placeholder="Dodaj przedmiot" required>

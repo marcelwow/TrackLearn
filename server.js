@@ -6,12 +6,19 @@ const session = require("express-session");
 const app = express();
 const port = 4000;
 
-// Połączenie z MongoDB
-mongoose.connect("mongodb+srv://marcelekwaw:marcel1234@cluster0.86jxk9y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+// Połączenie z MongoDB Atlas
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://marcelekwaw:marcel1234@cluster0.86jxk9y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-}).then(() => console.log(" Połączono z MongoDB"))
-    .catch(err => console.error(" Błąd połączenia z MongoDB:", err));
+    retryWrites: true,
+    w: 'majority'
+}).then(() => console.log("✅ Połączono z MongoDB Atlas"))
+    .catch(err => {
+        console.error("❌ Błąd połączenia z MongoDB Atlas:", err);
+        process.exit(1);
+    });
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -63,7 +70,27 @@ app.get("/register", isLoggedIn, (req, res) => {
 
 // Strona główna
 app.get("/", (req, res) => {
-    res.render("home");
+    res.render("home", {
+        userId: req.session.userId,
+        username: req.session.username
+    });
+});
+
+// Wylogowanie
+app.post("/logout", (req, res) => {
+    // Czyszczenie wszystkich danych sesji
+    req.session.userId = null;
+    req.session.username = null;
+    req.session.destroy((err) => {
+        if(err) {
+            console.error("Błąd podczas wylogowywania:", err);
+            return res.status(500).send("Błąd podczas wylogowywania");
+        }
+        // Czyszczenie ciasteczka sesji
+        res.clearCookie('connect.sid');
+        // Przekierowanie do strony głównej z kodem 302 (temporary redirect)
+        res.status(302).redirect("/");
+    });
 });
 
 // Przekierowanie z /auth na główną stronę
