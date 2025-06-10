@@ -1,6 +1,6 @@
 const Subject = require("../models/Subject");
 
-// Pobieranie wszystkich przedmiotów
+
 exports.getSubjects = async (req, res) => {
     const subjects = await Subject.find({ userId: req.session.userId });
     res.render("subjects", {
@@ -9,7 +9,7 @@ exports.getSubjects = async (req, res) => {
     });
 };
 
-// Dodawanie nowego przedmiotu
+
 exports.addSubject = async (req, res) => {
     await new Subject({
         name: req.body.name,
@@ -19,7 +19,7 @@ exports.addSubject = async (req, res) => {
     res.redirect("/subjects");
 };
 
-// Dodawanie oceny do przedmiotu
+
 exports.addGrade = async (req, res) => {
     const subject = await Subject.findOne({
         _id: req.params.id,
@@ -35,7 +35,7 @@ exports.addGrade = async (req, res) => {
     res.redirect("/subjects");
 };
 
-// Usuwanie przedmiotu
+
 exports.deleteSubject = async (req, res) => {
     await Subject.findOneAndDelete({
         _id: req.params.id,
@@ -44,7 +44,6 @@ exports.deleteSubject = async (req, res) => {
     res.redirect("/subjects");
 };
 
-// Przeliczanie średniej ocen
 exports.recalculateAverage = async (req, res) => {
     const subject = await Subject.findOne({
         _id: req.params.id,
@@ -55,9 +54,9 @@ exports.recalculateAverage = async (req, res) => {
         return res.status(404).json({ error: 'Przedmiot nie znaleziony' });
     }
 
-    // Oblicz średnią
+
     const average = subject.calculateAverage();
 
-    // Zwróć nową średnią
+
     res.json({ average });
 };

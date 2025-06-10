@@ -104,14 +104,14 @@
     <input type="text" name="name" placeholder="Dodaj przedmiot" required>
     <button type="submit" class="btn btn-success">Dodaj</button>
 </form>
-<!-- nowe -->
+
 
 <ul class="list-group mt-3">
     <% subjects.forEach(subject => { %>
         <li class="list-group-item">
             <strong><%= subject.name %></strong>
 
-            <!-- Lista ocen -->
+
             <p>📌 Oceny:
                 <% if (subject.grades.length === 0) { %>
                     Brak ocen
@@ -120,29 +120,29 @@
                 <% } %>
             </p>
 
-            <!-- Przycisk do przeliczenia średniej -->
+
             <button class="btn btn-info btn-sm" onclick="recalculateAverage('<%= subject._id %>')">Przelicz średnią</button>
 
-            <!-- Miejsce na średnią -->
+
             <p id="average-container-<%= subject._id %>" style="display: none;">
                 📊 Średnia ocen: <span id="average-<%= subject._id %>"></span>
             </p>
 
-            <!-- Przycisk do rysowania wykresu -->
+
             <button class="btn btn-secondary btn-sm" onclick="drawChart('<%= subject._id %>', <%= JSON.stringify(subject.grades) %>)">
                 🎨 Pokaż wykres
             </button>
 
-            <!-- Miejsce na wykres -->
+
             <canvas id="chart-<%= subject._id %>" width="400" height="200" style="display: none;"></canvas>
 
-            <!-- Formularz do dodania oceny -->
+
             <form action="/subjects/<%= subject._id %>/grade" method="POST">
                 <input type="number" step="0.01" name="grade" placeholder="Dodaj ocenę" required>
                 <button type="submit" class="btn btn-primary btn-sm">Dodaj ocenę</button>
             </form>
 
-            <!-- Przycisk do usunięcia przedmiotu -->
+
             <form action="/subjects/<%= subject._id %>/delete" method="POST" style="display:inline;">
                 <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
             </form>
@@ -163,16 +163,16 @@
 
     function drawChart(subjectId, grades) {
         const canvas = document.getElementById(`chart-${subjectId}`);
-        canvas.style.display = "block";  // Pokazujemy wykres
+        canvas.style.display = "block";
 
         const ctx = canvas.getContext("2d");
 
-        // Usuwamy poprzedni wykres (jeśli istnieje)
+
         if (window.charts && window.charts[subjectId]) {
             window.charts[subjectId].destroy();
         }
 
-        // Tworzymy nowy wykres
+
         if (!window.charts) window.charts = {};
         window.charts[subjectId] = new Chart(ctx, {
             type: "line",

@@ -10,7 +10,7 @@ const SubjectSchema = new mongoose.Schema({
     }
 });
 
-// Funkcja do obliczania średniej ocen
+
 SubjectSchema.methods.calculateAverage = function() {
     if (this.grades.length === 0) return "Brak ocen";
     const sum = this.grades.reduce((a, b) => a + b, 0);
