@@ -50,17 +50,6 @@ Aplikacja będzie dostępna pod adresem `http://localhost:3000`
 - Usuwanie przedmiotów
 - Dodawanie postępów do przedmiotów
 
-## Struktura Projektu
-
-TrackLearn-main/
-├── models/          # Modele danych
-├── routes/          # Definicje tras
-├── views/           # Szablony EJS
-├── public/          # Statyczne pliki
-├── config.js        # Konfiguracja aplikacji
-├── server.js        # Główny plik aplikacji
-└── package.json     # Zależności projektu
-
 ## Konfiguracja
 Wszystkie ustawienia aplikacji znajdują się w pliku `config.js`:
 - `PORT` - port na którym działa aplikacja (domyślnie 3000)
