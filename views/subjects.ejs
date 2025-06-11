@@ -111,6 +111,15 @@
         <li class="list-group-item">
             <strong><%= subject.name %></strong>
 
+            <div class="form-check form-switch mt-2">
+                <input class="form-check-input passed-toggle" type="checkbox"
+                       id="passed-<%= subject._id %>"
+                       data-subject-id="<%= subject._id %>"
+                        <%= subject.passed ? 'checked' : '' %>>
+                <label class="form-check-label" for="passed-<%= subject._id %>">
+                    <%= subject.passed ? 'Zdany' : 'Niezdany' %>
+                </label>
+            </div>
 
             <p>📌 Oceny:
                 <% if (subject.grades.length === 0) { %>
@@ -188,6 +197,29 @@
             }
         });
     }
+
+    // Add event listeners for passed toggles
+    document.querySelectorAll('.passed-toggle').forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            const subjectId = this.dataset.subjectId;
+            const label = this.nextElementSibling;
+
+            fetch(`/subjects/${subjectId}/toggle-passed`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    label.textContent = data.passed ? 'Zdany' : 'Niezdany';
+                })
+                .catch(error => {
+                    console.error('Błąd:', error);
+                    this.checked = !this.checked;
+                });
+        });
+    });
 </script>
 
 </body>

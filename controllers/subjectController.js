@@ -60,3 +60,18 @@ exports.recalculateAverage = async (req, res) => {
 
     res.json({ average });
 };
+
+exports.togglePassed = async (req, res) => {
+    const subject = await Subject.findOne({
+        _id: req.params.id,
+        userId: req.session.userId
+    });
+
+    if (!subject) {
+        return res.status(404).json({ error: 'Przedmiot nie znaleziony' });
+    }
+
+    subject.passed = !subject.passed;
+    await subject.save();
+    res.json({ passed: subject.passed });
+};

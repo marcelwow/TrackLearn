@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const SubjectSchema = new mongoose.Schema({
     name: String,
     grades: [Number], // Tablica ocen
+    passed: {
+        type: Boolean,
+        default: false
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
