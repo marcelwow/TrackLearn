@@ -49,7 +49,7 @@ Aplikacja będzie dostępna pod adresem `http://localhost:3000`
 - Przeglądanie listy przedmiotów
 - Usuwanie przedmiotów
 - Dodawanie postępów do przedmiotów
-- Możliwość zaznaczania czy przedmiot jest zdany lub tez nie
+- Możliwość zaznaczania czy przedmiot jest zdany lub też nie
 
 ## Konfiguracja
 Wszystkie ustawienia aplikacji znajdują się w pliku `config.js`:
