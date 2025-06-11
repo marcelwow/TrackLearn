@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const SubjectSchema = new mongoose.Schema({
     name: String,
-    grades: [Number], // Tablica ocen
+    grades: [Number],
     passed: {
         type: Boolean,
         default: false
