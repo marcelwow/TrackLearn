@@ -12,9 +12,9 @@ mongoose.connect(config.MONGODB_URI, {
     useUnifiedTopology: true,
     retryWrites: true,
     w: 'majority'
-}).then(() => console.log("✅ Połączono z MongoDB Atlas"))
+}).then(() => console.log(" Połączono z MongoDB Atlas"))
     .catch(err => {
-        console.error("❌ Błąd połączenia z MongoDB Atlas:", err);
+        console.error(" Błąd połączenia z MongoDB Atlas:", err);
         process.exit(1);
     });
 
