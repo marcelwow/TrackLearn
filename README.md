@@ -65,13 +65,11 @@ Wszystkie ustawienia aplikacji znajdują się w pliku `config.js`:
 1. Problem z połączeniem do MongoDB
    - Sprawdź czy dane logowania w `config.js` są poprawne
    - Upewnij się, że Twoje IP jest dozwolone w MongoDB Atlas
-   - Sprawdź czy baza danych "shop" istnieje
 
 2. Błędy podczas instalacji
    - Upewnij się, że masz zainstalowany Node.js
    - Spróbuj usunąć folder node_modules i wykonać `npm install` ponownie
 
 3. Problemy z sesją
-   - Wyczyść ciasteczka przeglądarki
    - Sprawdź czy port 3000 nie jest zajęty
 
